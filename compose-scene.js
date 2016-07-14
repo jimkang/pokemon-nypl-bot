@@ -64,7 +64,23 @@ function ComposeScene(createOpts, createDone) {
     }
 
     function resizeBG(bg, done) {
-      bg.contain(maxSceneWidth, maxSceneHeight);
+      var biggerThanMax = bg.bitmap.width > maxSceneWidth || bg.bitmap.height > maxSceneHeight;
+      if (biggerThanMax) {
+        if (probable.roll(4) ===  0) {
+          var cropX = 0;
+          var cropY = 0;
+          if (bg.bitmap.width > maxSceneWidth) {
+            cropX = probable.roll(bg.bitmap.width - maxSceneWidth);
+          }
+          if (bg.bitmap.height > maxSceneHeight) {
+            cropY = probable.roll(bg.bitmap.height - maxSceneHeight);
+          }
+          bg.crop(cropX, cropY, maxSceneWidth, maxSceneHeight);
+        }
+        else {
+          bg.scaleToFit(maxSceneWidth, maxSceneHeight, Jimp.RESIZE_BICUBIC);
+        }
+      }
       callNextTick(done, null, bg);
     }
 

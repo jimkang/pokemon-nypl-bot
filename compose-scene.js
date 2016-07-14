@@ -46,6 +46,7 @@ function ComposeScene(createOpts, createDone) {
         loadBGBuffer,
         resizeBG,
         loadFigures,
+        modifyFigures,
         pasteTogetherImage
       ],
       sceneDone
@@ -98,7 +99,19 @@ function ComposeScene(createOpts, createDone) {
       }
     }
 
-    function pasteTogetherImage(bg, figures, done) {      
+    function modifyFigures(bg, figures, done) {
+      figures.forEach(modifyFigure);
+      callNextTick(done, null, bg, figures);
+    }
+
+    function modifyFigure(figure) {
+      if (probable.roll(3) === 0) {
+        figure.flip(true, false);
+        // Maybe rotate sometimes?
+      }
+    }
+
+    function pasteTogetherImage(bg, figures, done) {
       var imageSpecs = figures.map(placeInstance);
       imageSpecs.unshift({
         jimpImage: bg,

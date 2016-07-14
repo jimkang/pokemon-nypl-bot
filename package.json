@@ -1,0 +1,36 @@
+{
+  "name": "pokemon-nypl-bot",
+  "version": "1.0.0",
+  "description": "Doo-doo-doo!",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jimkang/linkfinds.git"
+  },
+  "keywords": [],
+  "author": "Jim Kang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jimkang/linkfinds/issues"
+  },
+  "homepage": "https://github.com/jimkang/linkfinds",
+  "devDependencies": {
+    "tape": "^3.0.3"
+  },
+  "dependencies": {
+    "async": "^2.0.0-rc.3",
+    "call-next-tick": "^1.1.2",
+    "d3-queue": "^3.0.1",
+    "lodash.pick": "^4.2.1",
+    "lodash.pluck": "^3.1.2",
+    "paste-bitmaps": "^1.0.1",
+    "public-domain-nypl-captures": "^1.0.1",
+    "request": "^2.73.0",
+    "standard-bail": "^2.0.1",
+    "tumblrwks": "^0.3.0",
+    "twit": "^2.2.4"
+  }
+}

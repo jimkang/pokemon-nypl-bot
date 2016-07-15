@@ -17,7 +17,7 @@ sync:
 
 run-multiple:
 	number=1 ; while [[ $$number -le 10 ]] ; do \
-		node pokemon-nypl-bot-post.js --dry; \
+		node pokemon-everywhere-post.js --dry; \
 		((number = number + 1)) ; \
 	done
 

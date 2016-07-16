@@ -28,7 +28,7 @@
     "lodash.pluck": "^3.1.2",
     "paste-bitmaps": "^1.0.1",
     "probable": "^2.0.1",
-    "public-domain-nypl-captures": "^1.0.2",
+    "public-domain-nypl-captures": "^1.1.0",
     "request": "^2.73.0",
     "standard-bail": "^2.0.1",
     "tumblrwks": "^0.3.0",

@@ -7,9 +7,9 @@ var pokemonForIds = require('./pokemon-for-ids');
 var pokemonFilesDir = __dirname + '/static/pokemon/';
 
 var pokemonCountTable = probable.createTableFromDef({
-  '0-6': 1,
-  '7-8': 2,
-  '9-9': 3
+  '0-79': 1,
+  '80-98': 2,
+  '99-99': 3
 });
 
 function getPokemonImage(done) {

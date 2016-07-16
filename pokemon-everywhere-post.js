@@ -30,18 +30,31 @@ var twit = new Twit(config.twitter);
 
   function getImages(composeSceneFn) {
     composeScene = composeSceneFn;
+    var captureOpts = {
+      filterOutBrokenImageLinks: true,
+      validSizes: [
+        // 'q',
+        'w',
+        'r'
+      ]
+    };
 
     var q = queue();
     q.defer(getPokemonImage);
-    q.defer(getRandomNYPLCapture, {filterOutBrokenImageLinks: true});
+    q.defer(getRandomNYPLCapture, captureOpts);
     q.await(sb(assembleImage));
 
     function assembleImage(pokemonImage, bgImage) {
-      var composeOpts = {
-        figureURIs: pluck(pokemonImage, 'filepath'),
-        bgURI: bgImage.imageURL
-      };
-      composeScene(composeOpts, sb(postComposedImage));
+      if (!bgImage.preferredImageURL) {
+        wrapUp(new Error('Could not get reasonably-sized background.'));
+      }
+      else {
+        var composeOpts = {
+          figureURIs: pluck(pokemonImage, 'filepath'),
+          bgURI: bgImage.preferredImageURL
+        };
+        composeScene(composeOpts, sb(postComposedImage));
+      }
     }
   }
 })());

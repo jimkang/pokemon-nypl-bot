@@ -9,10 +9,10 @@ const queue = require('d3-queue').queue;
 const sb = require('standard-bail')();
 const request = require('request');
 
-const maxSceneWidth = 1600;
-const maxSceneHeight = 900;
-const marginX = ~~(maxSceneWidth/4);
-const marginY = ~~(maxSceneHeight/4);
+const maxSceneWidth = 1024;
+const maxSceneHeight = 768;
+const marginX = 0;
+const marginY = 0;
 
 function ComposeScene(createOpts, createDone) {
   var pasteBitmaps;
@@ -44,7 +44,7 @@ function ComposeScene(createOpts, createDone) {
       [
         getBG,
         loadBGBuffer,
-        resizeBG,
+        // resizeBG,
         loadFigures,
         modifyFigures,
         pasteTogetherImage
@@ -133,8 +133,8 @@ function ComposeScene(createOpts, createDone) {
       function placeInstance(thing) {
         return {
           jimpImage: thing,
-          x: marginX + roll(bg.bitmap.width - 2 * marginX) - thing.bitmap.width/2,
-          y: marginY + roll(bg.bitmap.height - 2 * marginY) - thing.bitmap.height/2
+          x: marginX + roll(bg.bitmap.width - 2 * marginX - thing.bitmap.width) ,
+          y: marginY + roll(bg.bitmap.height - 2 * marginY - thing.bitmap.height)
         };
       } 
     }

@@ -24,7 +24,7 @@ if (process.argv.length > 2) {
 
 var twit = new Twit(config.twitter);
 
-((function go() {
+function go() {
   var composeScene;
 
   ComposeScene({}, sb(getImages));
@@ -86,7 +86,7 @@ var twit = new Twit(config.twitter);
       }
     }
   }
-})());
+}
 
 function wrapUp(error, data) {
   tryCount += 1;
@@ -100,11 +100,12 @@ function wrapUp(error, data) {
 
     if (tryCount < 5) {
       console.log(tryCount, 'tries so far. Trying again!');
-      callNextTick(tryToPostpokemon-nypl-bot);
+      callNextTick(go);
+    }
+    else {
+      console.log('Hit max tries. Giving up.');
     }
   }
-  else {
-    // Technically, the user wasn't replied to, but good enough.
-    // lastTurnRecord.recordTurn(callOutId, new Date(), reportRecording);
-  }
 }
+
+go();

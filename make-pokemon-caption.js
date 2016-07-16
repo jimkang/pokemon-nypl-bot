@@ -1,4 +1,5 @@
 var probable = require('probable');
+var truncateToTweet = require('tweet-truncate');
 
 var connectors = [
   ' ; ',
@@ -24,7 +25,12 @@ function makePokemonCaption(pokemonNames, exhibit, url) {
     caption += probable.pickFromArray(punctuation);
   }
   if (url) {
-    caption += ' ' + url;
+    caption = truncateToTweet({
+      text: caption,
+      urlsToAdd: [
+        url
+      ]
+    });
   };
   return caption;
 }

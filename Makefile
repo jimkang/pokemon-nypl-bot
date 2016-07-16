@@ -10,7 +10,7 @@ pushall: sync
 
 sync:
 	rsync -a $(HOMEDIR) $(USER)@$(SERVER):/opt/ --exclude node_modules/ --exclude image-output/
-	$(SSHCMD) "cd $(APPDIR) && npm install"
+	# $(SSHCMD) "cd $(APPDIR) && npm install"
 
 # check-log:
 	# $(SSHCMD) "journalctl -r -u $(PROJECTNAME)"
@@ -20,6 +20,14 @@ run-multiple:
 		node pokemon-everywhere-post.js --dry; \
 		((number = number + 1)) ; \
 	done
+
+run-dry-on-server:
+	$(SSHCMD) "cd $(APPDIR) && node pokemon-everywhere-post.js --dry"
+
+get-image-output-from-server:
+	$(SSHCMD) "cd $(APPDIR) && tar zcvf image-output.tgz image-output/*"
+	scp $(USER)@$(SERVER):$(APPDIR)/image-output.tgz server-image-output.tgz
+	tar zxvf server-image-output.tgz
 
 # Experimentation targets.
 # Set the NYPLTOKEN environment variable before running these.

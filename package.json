@@ -29,6 +29,7 @@
     "paste-bitmaps": "^1.0.1",
     "probable": "^2.0.1",
     "public-domain-nypl-captures": "^1.1.0",
+    "random-apod": "^1.0.1",
     "request": "^2.73.0",
     "standard-bail": "^2.0.1",
     "titlecase": "^1.1.2",

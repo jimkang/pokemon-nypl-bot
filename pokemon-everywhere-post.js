@@ -10,15 +10,19 @@ var fs = require('fs');
 var makePokemonCaption = require('./make-pokemon-caption');
 
 var configPath;
+var behaviorPath;
 
 if (process.env.CONFIG) {
   configPath = './configs/' + process.env.CONFIG + '-config';
+  behaviorPath = './configs/' + process.env.CONFIG + '-behavior';
 }
 else {
   configPath = './configs/nypl-config';
+  behaviorPath = './configs/behavior-config';
 }
 
 var config = require(configPath);
+var behavior = require(behaviorPath);
 var dryRun = false;
 var tryCount = 0;
 
@@ -47,23 +51,23 @@ function go() {
     var caption;
     var q = queue();
     q.defer(getPokemonImage);
-    q.defer(config.getBackgroundImage, captureOpts);
+    q.defer(behavior.getBackgroundImage, captureOpts);
     q.await(sb(assembleImage));
 
     function assembleImage(pokemonImages, bgImage) {
       caption = makePokemonCaption(
         pluck(pokemonImages, 'name'),
-        bgImage[config.properties.title],
-        bgImage[config.properties.url]
+        bgImage[behavior.properties.title],
+        bgImage[behavior.properties.url]
       );
 
-      if (!bgImage[config.properties.image]) {
+      if (!bgImage[behavior.properties.image]) {
         wrapUp(new Error('Could not get reasonably-sized background.'));
       }
       else {
         var composeOpts = {
           figureURIs: pluck(pokemonImages, 'filepath'),
-          bgURI: bgImage[config.properties.image]
+          bgURI: bgImage[behavior.properties.image]
         };
         composeScene(composeOpts, sb(postComposedImage));
       }
@@ -87,7 +91,6 @@ function go() {
         process.exit();
       }
       else {
-        debugger;
         postImage(postImageOpts, wrapUp);
       }
     }

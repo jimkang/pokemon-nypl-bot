@@ -11,5 +11,6 @@ module.exports = {
     image: 'image',
     title: 'title',
     url: 'id'
-  }
+  },
+  rotationChance: 10
 };

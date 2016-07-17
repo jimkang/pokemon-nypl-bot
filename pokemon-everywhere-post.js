@@ -34,8 +34,11 @@ var twit = new Twit(config.twitter);
 
 function go() {
   var composeScene;
+  var composeOpts  = {
+    rotationChance: behavior.rotationChance
+  };
 
-  ComposeScene({}, sb(getImages));
+  ComposeScene(composeOpts, sb(getImages));
 
   function getImages(composeSceneFn) {
     composeScene = composeSceneFn;

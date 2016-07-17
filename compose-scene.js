@@ -15,6 +15,12 @@ const marginX = 0;
 const marginY = 0;
 
 function ComposeScene(createOpts, createDone) {
+  var rotationChance;
+
+  if (createOpts) {
+    rotationChance = createOpts.rotationChance;
+  }
+
   var pasteBitmaps;
   var pasteConfig = {
   };
@@ -107,7 +113,9 @@ function ComposeScene(createOpts, createDone) {
     function modifyFigure(figure) {
       if (probable.roll(3) === 0) {
         figure.flip(true, false);
-        // Maybe rotate sometimes?
+      }
+      if (rotationChance && probable.roll(100) < rotationChance) {
+        figure.rotate(probable.roll(360));
       }
     }
 

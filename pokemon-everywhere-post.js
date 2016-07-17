@@ -1,20 +1,24 @@
-var config = require('./config');
-
 var Twit = require('twit');
-// var async = require('async');
 var postImage = require('./post-image');
-// var getPairedImageResult = require('./get-paired-image-result');
 const ComposeScene = require('./compose-scene');
-// var fs = require('fs');
 var callNextTick = require('call-next-tick');
 var sb = require('standard-bail')();
 var queue = require('d3-queue').queue;
 var getPokemonImage = require('./get-pokemon-image');
-var getRandomNYPLCapture = require('public-domain-nypl-captures').getRandomCapture;
 var pluck = require('lodash.pluck');
 var fs = require('fs');
 var makePokemonCaption = require('./make-pokemon-caption');
 
+var configPath;
+
+if (process.env.CONFIG) {
+  configPath = './configs/' + process.env.CONFIG + '-config';
+}
+else {
+  configPath = './configs/nypl-config';
+}
+
+var config = require(configPath);
 var dryRun = false;
 var tryCount = 0;
 
@@ -43,21 +47,23 @@ function go() {
     var caption;
     var q = queue();
     q.defer(getPokemonImage);
-    q.defer(getRandomNYPLCapture, captureOpts);
+    q.defer(config.getBackgroundImage, captureOpts);
     q.await(sb(assembleImage));
 
     function assembleImage(pokemonImages, bgImage) {
       caption = makePokemonCaption(
-        pluck(pokemonImages, 'name'), bgImage.title, bgImage.digitalCollectionsURL
+        pluck(pokemonImages, 'name'),
+        bgImage[config.properties.title],
+        bgImage[config.properties.url]
       );
 
-      if (!bgImage.preferredImageURL) {
+      if (!bgImage[config.properties.image]) {
         wrapUp(new Error('Could not get reasonably-sized background.'));
       }
       else {
         var composeOpts = {
           figureURIs: pluck(pokemonImages, 'filepath'),
-          bgURI: bgImage.preferredImageURL
+          bgURI: bgImage[config.properties.image]
         };
         composeScene(composeOpts, sb(postComposedImage));
       }

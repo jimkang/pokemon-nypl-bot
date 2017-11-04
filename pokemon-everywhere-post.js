@@ -1,10 +1,9 @@
 var Twit = require('twit');
 var postImage = require('./post-image');
-const ComposeScene = require('./compose-scene');
+var ComposeScene = require('./compose-scene');
 var callNextTick = require('call-next-tick');
 var sb = require('standard-bail')();
 var queue = require('d3-queue').queue;
-var getPokemonImage = require('./get-pokemon-image');
 var pluck = require('lodash.pluck');
 var fs = require('fs');
 var makePokemonCaption = require('./make-pokemon-caption');
@@ -30,6 +29,8 @@ if (process.argv.length > 2) {
   dryRun = (process.argv.indexOf('--dry') !== -1);
 }
 
+var getForegroundImage = behavior.getForegroundImage;
+
 var twit = new Twit(config.twitter);
 
 function go() {
@@ -53,7 +54,7 @@ function go() {
 
     var caption;
     var q = queue();
-    q.defer(getPokemonImage);
+    q.defer(getForegroundImage);
     q.defer(behavior.getBackgroundImage, captureOpts);
     q.await(sb(assembleImage));
 

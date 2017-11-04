@@ -12,5 +12,6 @@ module.exports = {
     title: 'title',
     url: 'id'
   },
+  getForegroundImage: require('../get-pokemon-image'),
   rotationChance: 10
 };

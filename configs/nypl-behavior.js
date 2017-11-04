@@ -6,5 +6,6 @@ module.exports = {
     image: 'preferredImageURL',
     title: 'title',
     url: 'digitalCollectionsURL'
-  }
+  },
+  getForegroundImage: require('../get-pokemon-image')
 };

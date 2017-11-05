@@ -70,7 +70,7 @@ function go() {
       }
       else {
         var composeOpts = {
-          figureURIs: pluck(pokemonImages, 'filepath'),
+          figureURIs: pluck(pokemonImages, 'path'),
           bgURI: bgImage[behavior.properties.image]
         };
         composeScene(composeOpts, sb(postComposedImage));

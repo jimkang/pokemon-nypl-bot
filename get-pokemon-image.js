@@ -44,7 +44,7 @@ function wrapFileInMetadata(pokemonFile) {
   var pokemonId = pokemonFile.replace('.png', '');
   pokemonId = pokemonId.replace('-mega', '');
   return {
-    filepath: pokemonFilesDir + pokemonFile,
+    path: pokemonFilesDir + pokemonFile,
     name: pokemonForIds[pokemonId],
     pokemonId: pokemonId
   };

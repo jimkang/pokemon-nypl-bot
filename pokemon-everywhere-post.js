@@ -1,3 +1,5 @@
+/* global process */
+
 var Twit = require('twit');
 var postImage = require('./post-image');
 var ComposeScene = require('./compose-scene');
@@ -77,7 +79,7 @@ function go() {
       }
     }
 
-    function postComposedImage(buffer, done) {
+    function postComposedImage(buffer) {
       var postImageOpts = {
         twit: twit,
         dryRun: dryRun,

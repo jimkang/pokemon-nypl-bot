@@ -1,3 +1,5 @@
+/* global __dirname */
+
 var fs = require('fs');
 var async = require('async');
 var probable = require('probable');

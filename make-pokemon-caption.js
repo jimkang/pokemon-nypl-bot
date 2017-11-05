@@ -32,7 +32,7 @@ function makePokemonCaption(pokemonNames, exhibit, url) {
         url
       ]
     });
-  };
+  }
   return caption;
 }
 

@@ -3,14 +3,11 @@ const Jimp = require('jimp');
 const PasteBitmaps = require('paste-bitmaps');
 const probable = require('probable');
 const roll = probable.roll;
-const rollDie = probable.rollDie;
 const callNextTick = require('call-next-tick');
 const queue = require('d3-queue').queue;
 const sb = require('standard-bail')();
 const request = require('request');
 
-const maxSceneWidth = 1024;
-const maxSceneHeight = 768;
 const marginX = 0;
 const marginY = 0;
 
@@ -39,7 +36,6 @@ function ComposeScene(createOpts, createDone) {
   function ComposeScene(opts, sceneDone) {
     var figureURIs;
     var bgURI;
-    var scene;
 
     if (opts) {
       figureURIs = opts.figureURIs;
@@ -70,27 +66,6 @@ function ComposeScene(createOpts, createDone) {
       Jimp.read(buffer, done);      
     }
 
-    function resizeBG(bg, done) {
-      var biggerThanMax = bg.bitmap.width > maxSceneWidth || bg.bitmap.height > maxSceneHeight;
-      if (biggerThanMax) {
-        if (probable.roll(4) ===  0) {
-          var cropX = 0;
-          var cropY = 0;
-          if (bg.bitmap.width > maxSceneWidth) {
-            cropX = probable.roll(bg.bitmap.width - maxSceneWidth);
-          }
-          if (bg.bitmap.height > maxSceneHeight) {
-            cropY = probable.roll(bg.bitmap.height - maxSceneHeight);
-          }
-          bg.crop(cropX, cropY, maxSceneWidth, maxSceneHeight);
-        }
-        else {
-          bg.scaleToFit(maxSceneWidth, maxSceneHeight, Jimp.RESIZE_BICUBIC);
-        }
-      }
-      callNextTick(done, null, bg);
-    }
-
     function loadFigures(bg, done) {
       var q = queue(1);
       figureURIs.forEach(queueFigureLoad);
@@ -106,8 +81,19 @@ function ComposeScene(createOpts, createDone) {
     }
 
     function modifyFigures(bg, figures, done) {
+      figures.forEach(scaleIfNecessary);
       figures.forEach(modifyFigure);
       callNextTick(done, null, bg, figures);
+
+      function scaleIfNecessary(figure) {
+        if (figure.bitmap.width > bg.bitmap.width/2 ||
+          figure.bitmap.height > bg.bitmap.height/2) {
+
+          figure.scaleToFit(
+            bg.bitmap.width/2, bg.bitmap.height/2, Jimp.RESIZE_BICUBIC
+          );
+        }
+      }
     }
 
     function modifyFigure(figure) {

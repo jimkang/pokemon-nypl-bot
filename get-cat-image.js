@@ -16,8 +16,8 @@ var catCountTable = probable.createTableFromSizes([
 function getCatImage(allDone) {
   var desiredNumberOfCats = catCountTable.roll();
   var gisOpts = {
-    searchTerm: 'cat transparent background',
-    queryStringAddition: '&safe=active&tbs=ic:trans,itp=photo,isz:m',
+    searchTerm: 'pizza transparent background',
+    queryStringAddition: '&safe=active&tbs=ic:trans,itp=photo',
     filterOutDomains: [
       'deviantart.net',
       'deviantart.com',
@@ -42,7 +42,7 @@ function getCatImage(allDone) {
     }
     else {
       let imageResults = probable.shuffle(
-        results.slice(0, 50)
+        results.slice(0, 100)
       );
       allResultURLs = pluck(imageResults, 'url');
       passAlongGoodCatImages(allResultURLs.slice(0, desiredNumberOfCats));

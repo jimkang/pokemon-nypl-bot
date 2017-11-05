@@ -17,7 +17,7 @@ sync:
 
 run-multiple:
 	number=1 ; while [[ $$number -le 10 ]] ; do \
-		CONFIG=cosmiccats node pokemon-everywhere-post.js --dry; \
+		CONFIG=detritus node pokemon-everywhere-post.js --dry; \
 		((number = number + 1)) ; \
 	done
 

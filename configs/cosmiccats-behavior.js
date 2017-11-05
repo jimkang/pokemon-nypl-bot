@@ -14,5 +14,5 @@ module.exports = {
     url: 'id'
   },
   getForegroundImage: require('../get-cat-image'),
-  rotationChance: 10
+  rotationChance: 1
 };

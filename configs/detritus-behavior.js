@@ -34,7 +34,7 @@ module.exports = {
       [2, 'burrito'],
       [3, 'cat transparent background'],
       [1, 'lego'],
-      [7, 'fruit'],
+      [2, 'fruit'],
       [7, 'eggplant'],
       [3, 'vegetable']
     ]).roll

@@ -6,12 +6,23 @@ module.exports = {
     pickSearchString: probable.createTableFromSizes([
       [6, 'galaxy'],
       [10, 'nebula'],
-      [2, 'star'],
-      [10, 'planet'],
-      [2, 'space'],
-      [10, 'moon'],
-      [2, 'asteroid'],
-      [10, 'mars']
+      [5, 'star'],
+      [2, 'planet'],
+      [2, 'black hole'],
+      [3, 'moon'],
+      [2, 'surface'],
+      [1, 'asteroid'],
+      [4, 'rings'],
+      [6, 'bright'],
+      [5, 'colorful'],
+      [2, 'mars'],
+      [3, 'pluto'],
+      [2, 'neptune'],
+      [3, 'saturn'],
+      [3, 'jupiter'],
+      [1, 'venus'],
+      [2, 'mercury'],
+      [3, 'comet']
     ]).roll
   }),
   // These are properties in the background image.

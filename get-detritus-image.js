@@ -13,6 +13,13 @@ var objectCountTable = probable.createTableFromSizes([
   [1, 3 + probable.roll(10)]
 ]);
 
+var mysteryNameTable = probable.createTableFromSizes([
+  [5, 'a mystery'],
+  [5, 'something strange'],
+  [5, 'an unexpected discovery'],
+  [1, '???']
+]);
+
 function GetDetritusImage({getSearchString}) {
   return getDetritusImage;
 
@@ -65,7 +72,8 @@ function GetDetritusImage({getSearchString}) {
     function wrapURLInMetadata(url) {
       return {
         path: url,
-        name: searchString.replace(' transparent background', '')
+        searchString: searchString,
+        name: mysteryNameTable.roll()
       };
     }
   }

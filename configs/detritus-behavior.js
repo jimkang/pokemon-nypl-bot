@@ -8,7 +8,7 @@ module.exports = {
       [10, 'nebula'],
       [2, 'star'],
       [10, 'planet'],
-      [10, 'space'],
+      [2, 'space'],
       [10, 'moon'],
       [2, 'asteroid'],
       [10, 'mars']

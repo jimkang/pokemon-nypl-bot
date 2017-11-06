@@ -55,6 +55,7 @@ function go() {
     };
 
     var caption;
+    var filePath;
     var q = queue();
     q.defer(getForegroundImage);
     q.defer(behavior.getBackgroundImage, captureOpts);
@@ -66,6 +67,11 @@ function go() {
         bgImage[behavior.properties.title],
         bgImage[behavior.properties.url]
       );
+
+      filePath = 'image-output/would-have-posted-' +
+          (new Date()).toISOString().replace(/:/g, '-') +
+          pluck(pokemonImages, 'searchString') +
+          bgImage[behavior.properties.title] + '.png';
 
       if (!bgImage[behavior.properties.image]) {
         wrapUp(new Error('Could not get reasonably-sized background.'));
@@ -89,11 +95,8 @@ function go() {
       };
 
       if (dryRun) {
-        const filename = 'image-output/would-have-posted-' +
-          (new Date()).toISOString().replace(/:/g, '-') + caption +
-          '.png';
-        console.log('Writing out', filename);
-        fs.writeFileSync(filename, buffer);
+        console.log('Writing out', filePath);
+        fs.writeFileSync(filePath, buffer);
         process.exit();
       }
       else {

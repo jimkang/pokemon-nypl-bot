@@ -25,6 +25,7 @@
     "call-next-tick": "^1.1.2",
     "d3-queue": "^3.0.7",
     "g-i-s": "^2.1.1",
+    "lodash.curry": "^4.1.1",
     "lodash.pick": "^4.2.1",
     "lodash.pluck": "^3.1.2",
     "paste-bitmaps": "^1.0.1",

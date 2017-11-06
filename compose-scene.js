@@ -10,6 +10,8 @@ const request = require('request');
 
 const marginX = 0;
 const marginY = 0;
+const maxBGWidth = 1600;
+const maxBGHeight = 800;
 
 function ComposeScene(createOpts, createDone) {
   var rotationChance;
@@ -46,7 +48,7 @@ function ComposeScene(createOpts, createDone) {
       [
         getBG,
         loadBGBuffer,
-        // resizeBG,
+        resizeBG,
         loadFigures,
         modifyFigures,
         pasteTogetherImage
@@ -64,6 +66,13 @@ function ComposeScene(createOpts, createDone) {
 
     function loadBGBuffer(response, buffer, done) {
       Jimp.read(buffer, done);      
+    }
+
+    function resizeBG(bg, done) {
+      if (bg.bitmap.width > maxBGWidth || bg.bitmap.height > maxBGHeight) {
+        bg.scaleToFit(maxBGWidth, maxBGHeight, Jimp.RESIZE_BICUBIC);
+      }
+      callNextTick(done, null, bg);
     }
 
     function loadFigures(bg, done) {

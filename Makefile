@@ -10,7 +10,7 @@ pushall: sync
 
 sync:
 	rsync -a $(HOMEDIR) $(USER)@$(SERVER):/opt/ --exclude node_modules/ --exclude image-output/
-	# $(SSHCMD) "cd $(APPDIR) && npm install"
+	$(SSHCMD) "cd $(APPDIR) && npm install"
 
 # check-log:
 	# $(SSHCMD) "journalctl -r -u $(PROJECTNAME)"
@@ -45,3 +45,9 @@ try-collection-metadata:
 # Current winner:
 try-item-captures:
 	$(AUTHCURL) http://api.repo.nypl.org/api/v1/items/f4469970-c539-012f-e50d-58d385a7bc34.xml
+
+try-nasa-images:
+	curl -G https://images-api.nasa.gov/search \
+		--data-urlencode "q=galaxy" \
+		--data-urlencode "media_type=image" \
+		| json

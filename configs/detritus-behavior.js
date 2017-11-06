@@ -1,13 +1,19 @@
-var randomApod = require('random-apod');
-var callNextTick = require('call-next-tick');
+var GetRandomNASAImage = require('../get-random-nasa-image');
 var probable = require('probable');
 
-function randomApodAsync(opts, done) {
-  callNextTick(done, null, randomApod());
-}
-
 module.exports = {
-  getBackgroundImage: randomApodAsync,
+  getBackgroundImage: GetRandomNASAImage({
+    pickSearchString: probable.createTableFromSizes([
+      [6, 'galaxy'],
+      [10, 'nebula'],
+      [2, 'star'],
+      [10, 'planet'],
+      [10, 'space'],
+      [10, 'moon'],
+      [2, 'asteroid'],
+      [10, 'mars']
+    ]).roll
+  }),
   // These are properties in the background image.
   properties: {
     image: 'image',
@@ -20,13 +26,17 @@ module.exports = {
       [10, 'hot dog transparent background'],
       [10, 'burger transparent background'],
       [10, 'snail'],
-      [10, 'snake'],
-      [10, 'drake rapper transparent background'],
-      [10, 'skull'],
+      [8, 'snake photo'],
+      [5, 'drake rapper transparent background'],
+      [8, 'skull'],
       [10, 'skeleton'],
       [10, 'taco'],
-      [10, 'burrito'],
-      [10, 'cat transparent background']
+      [2, 'burrito'],
+      [3, 'cat transparent background'],
+      [1, 'lego'],
+      [7, 'fruit'],
+      [7, 'eggplant'],
+      [3, 'vegetable']
     ]).roll
   }),
   rotationChance: 1

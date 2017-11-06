@@ -90,7 +90,7 @@ function go() {
 
       if (dryRun) {
         const filename = 'image-output/would-have-posted-' +
-          (new Date()).toISOString().replace(/:/g, '-') +
+          (new Date()).toISOString().replace(/:/g, '-') + caption +
           '.png';
         console.log('Writing out', filename);
         fs.writeFileSync(filename, buffer);

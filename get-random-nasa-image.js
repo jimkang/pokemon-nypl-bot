@@ -36,7 +36,7 @@ function GetRandomNASAImage({pickSearchString}) {
       var result = {
         id: item.data[0].nasa_id,
         title: item.data[0].title,
-        image: thumbnailURL.replace('~thumb', '~orig')
+        image: thumbnailURL.replace('~thumb', '~medium') // ~orig is often too much memory.
       };
       done(null, result);
     }

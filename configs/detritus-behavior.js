@@ -36,7 +36,7 @@ module.exports = {
       [10, 'pizza transparent background'],
       [10, 'hot dog transparent background'],
       [10, 'burger transparent background'],
-      [10, 'snail'],
+      [8, 'snail'],
       [8, 'snake photo'],
       [5, 'drake rapper transparent background'],
       [8, 'skull'],

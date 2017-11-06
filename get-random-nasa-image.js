@@ -1,6 +1,7 @@
 var request = require('request');
 var sb = require('standard-bail')();
 var probable = require('probable');
+var queue = require('d3-queue').queue;
 
 const baseURL = 'https://images-api.nasa.gov/search';
 
@@ -30,23 +31,29 @@ function GetRandomNASAImage({pickSearchString}) {
       }
 
       var item = probable.pickFromArray(body.collection.items);
+
+      var thumbnailURL = item.links[0].href;
       // Warning: This is brittle. Proper way would be to get the JSON
       // file at `data.href` then get the image link from there.
-      var thumbnailURL = item.links[0].href;
-      var result = {
-        id: item.data[0].nasa_id,
-        title: item.data[0].title,
-        image: thumbnailURL.replace('~thumb', '~medium') // ~orig is often too much memory.
-      };
-      checkMIMEType(result.image, sb(passResult, done));
+      // ~orig is often too much memory, but worth trying if medium doesn't exist.
+      var q = queue();
+      q.defer(checkMIMEType, thumbnailURL.replace('~thumb', '~medium'));
+      q.defer(checkMIMEType, thumbnailURL.replace('~thumb', '~orig'));
+      q.await(sb(passResult, done));
 
-      function passResult() {
+      function passResult(mediumURL, origURL) {
+        var result = {
+          id: item.data[0].nasa_id,
+          title: item.data[0].title,
+          image: mediumURL ? mediumURL : origURL
+        };
         done(null, result);
       }
     }
   }
 }
 
+// Passes back the url if it is good, otherwise passes nothing.
 function checkMIMEType(url, done) {
   request(
     {
@@ -59,10 +66,11 @@ function checkMIMEType(url, done) {
   function inspectHeaders(res) {
     console.log('content-type:', res.headers['content-type']);
     if (res.headers['content-type']) {
-      done();
+      done(null, url);
     }
     else {
-      done(new Error('No content-type found on ' + url));
+      console.log('No content-type found on ' + url);
+      done();
     }
   }
 }

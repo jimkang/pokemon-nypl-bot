@@ -41,7 +41,7 @@ function go() {
     rotationChance: behavior.rotationChance
   };
 
-  ComposeScene(composeOpts, sb(getImages));
+  ComposeScene(composeOpts, sb(getImages, wrapUp));
 
   function getImages(composeSceneFn) {
     composeScene = composeSceneFn;
@@ -59,7 +59,7 @@ function go() {
     var q = queue();
     q.defer(getForegroundImage);
     q.defer(behavior.getBackgroundImage, captureOpts);
-    q.await(sb(assembleImage));
+    q.await(sb(assembleImage, wrapUp));
 
     function assembleImage(pokemonImages, bgImage) {
       caption = makePokemonCaption(
@@ -81,7 +81,7 @@ function go() {
           figureURIs: pluck(pokemonImages, 'path'),
           bgURI: bgImage[behavior.properties.image]
         };
-        composeScene(composeOpts, sb(postComposedImage));
+        composeScene(composeOpts, sb(postComposedImage, wrapUp));
       }
     }
 

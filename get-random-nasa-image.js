@@ -38,7 +38,31 @@ function GetRandomNASAImage({pickSearchString}) {
         title: item.data[0].title,
         image: thumbnailURL.replace('~thumb', '~medium') // ~orig is often too much memory.
       };
-      done(null, result);
+      checkMIMEType(result.image, sb(passResult, done));
+
+      function passResult() {
+        done(null, result);
+      }
+    }
+  }
+}
+
+function checkMIMEType(url, done) {
+  request(
+    {
+      url: url,
+      method: 'HEAD'
+    },
+    sb(inspectHeaders, done)
+  );
+
+  function inspectHeaders(res) {
+    console.log('content-type:', res.headers['content-type']);
+    if (res.headers['content-type']) {
+      done();
+    }
+    else {
+      done(new Error('No content-type found on ' + url));
     }
   }
 }

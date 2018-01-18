@@ -9,6 +9,8 @@ var queue = require('d3-queue').queue;
 var pluck = require('lodash.pluck');
 var fs = require('fs');
 var makePokemonCaption = require('./make-pokemon-caption');
+var StaticWebArchiveOnGit = require('static-web-archive-on-git');
+var randomId = require('idmaker').randomId;
 
 var configPath;
 var behaviorPath;
@@ -30,6 +32,20 @@ var tryCount = 0;
 if (process.argv.length > 2) {
   dryRun = (process.argv.indexOf('--dry') !== -1);
 }
+
+var staticWebStream = StaticWebArchiveOnGit({
+  config: config.github,
+  title: config.archiveName,
+  footerScript: `<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-49491163-1', 'jimkang.com');
+  ga('send', 'pageview');
+</script>`,
+  maxEntriesPerPage: 50
+});
 
 var getForegroundImage = behavior.getForegroundImage;
 
@@ -81,11 +97,36 @@ function go() {
           figureURIs: pluck(pokemonImages, 'path'),
           bgURI: bgImage[behavior.properties.image]
         };
-        composeScene(composeOpts, sb(postComposedImage, wrapUp));
+        composeScene(composeOpts, sb(postComposedImageToTargets, wrapUp));
       }
     }
 
-    function postComposedImage(buffer) {
+    function postComposedImageToTargets(buffer, done) {
+      if (dryRun) {
+        console.log('Writing out', filePath);
+        fs.writeFileSync(filePath, buffer);
+        callNextTick(done, null);
+      } else {
+        var q = queue();
+        q.defer(postTweet, buffer);
+        q.defer(postToArchive, buffer);
+        q.await(done);
+      }
+    }
+
+    function postToArchive(buffer, done) {
+      var id = 'finding-' + randomId(8);
+      staticWebStream.write({
+        id,
+        date: new Date().toISOString(),
+        mediaFilename: id + '.png',
+        caption,
+        buffer
+      });
+      staticWebStream.end(done);      
+    }
+
+    function postTweet(buffer) {
       var postImageOpts = {
         twit: twit,
         dryRun: dryRun,
@@ -94,14 +135,7 @@ function go() {
         caption: caption
       };
 
-      if (dryRun) {
-        console.log('Writing out', filePath);
-        fs.writeFileSync(filePath, buffer);
-        process.exit();
-      }
-      else {
-        postImage(postImageOpts, wrapUp);
-      }
+      postImage(postImageOpts, wrapUp);
     }
   }
 }

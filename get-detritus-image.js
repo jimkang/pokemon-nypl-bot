@@ -20,7 +20,7 @@ var mysteryNameTable = probable.createTableFromSizes([
   [1, '???']
 ]);
 
-function GetDetritusImage({getSearchString}) {
+function GetDetritusImage({ getSearchString }) {
   return getDetritusImage;
 
   function getDetritusImage(allDone) {
@@ -50,21 +50,19 @@ function GetDetritusImage({getSearchString}) {
 
       if (results.length < 1) {
         allDone(new Error(`Could not find ${searchString} image?!`));
-      }
-      else {
-        let imageResults = probable.shuffle(
-          results.slice(0, 100)
-        );
+      } else {
+        let imageResults = probable.shuffle(results.slice(0, 100));
         allResultURLs = pluck(imageResults, 'url');
-        passAlongGoodDetritusImages(allResultURLs.slice(0, desiredNumberOfObjects));
+        passAlongGoodDetritusImages(
+          allResultURLs.slice(0, desiredNumberOfObjects)
+        );
       }
     }
 
     function passAlongGoodDetritusImages(goodURLs) {
       if (!goodURLs || goodURLs.length < 1) {
         allDone(new Error(`Could not find ${searchString} image?!`));
-      }
-      else {
+      } else {
         allDone(null, goodURLs.map(wrapURLInMetadata));
       }
     }

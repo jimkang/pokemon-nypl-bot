@@ -16,11 +16,7 @@ var pokemonCountTable = probable.createTableFromDef({
 
 function getPokemonImage(done) {
   async.waterfall(
-    [
-      getPokemonFiles,
-      pickPokemonFiles,
-      wrapFilesInMetadata      
-    ],
+    [getPokemonFiles, pickPokemonFiles, wrapFilesInMetadata],
     done
   );
 }

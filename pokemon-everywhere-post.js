@@ -18,8 +18,7 @@ var behaviorPath;
 if (process.env.CONFIG) {
   configPath = './configs/' + process.env.CONFIG + '-config';
   behaviorPath = './configs/' + process.env.CONFIG + '-behavior';
-}
-else {
+} else {
   configPath = './configs/nypl-config';
   behaviorPath = './configs/behavior-config';
 }
@@ -30,7 +29,7 @@ var dryRun = false;
 var tryCount = 0;
 
 if (process.argv.length > 2) {
-  dryRun = (process.argv.indexOf('--dry') !== -1);
+  dryRun = process.argv.indexOf('--dry') !== -1;
 }
 
 var staticWebStream = StaticWebArchiveOnGit({
@@ -53,7 +52,7 @@ var twit = new Twit(config.twitter);
 
 function go() {
   var composeScene;
-  var composeOpts  = {
+  var composeOpts = {
     rotationChance: behavior.rotationChance
   };
 
@@ -84,15 +83,16 @@ function go() {
         bgImage[behavior.properties.url]
       );
 
-      filePath = 'image-output/would-have-posted-' +
-          (new Date()).toISOString().replace(/:/g, '-') +
-          pluck(pokemonImages, 'searchString') +
-          bgImage[behavior.properties.title] + '.png';
+      filePath =
+        'image-output/would-have-posted-' +
+        new Date().toISOString().replace(/:/g, '-') +
+        pluck(pokemonImages, 'searchString') +
+        bgImage[behavior.properties.title] +
+        '.png';
 
       if (!bgImage[behavior.properties.image]) {
         wrapUp(new Error('Could not get reasonably-sized background.'));
-      }
-      else {
+      } else {
         var composeOpts = {
           figureURIs: pluck(pokemonImages, 'path'),
           bgURI: bgImage[behavior.properties.image]
@@ -123,7 +123,7 @@ function go() {
         caption,
         buffer
       });
-      staticWebStream.end(done);      
+      staticWebStream.end(done);
     }
 
     function postTweet(buffer) {
@@ -153,8 +153,7 @@ function wrapUp(error, data) {
     if (tryCount < 5) {
       console.log(tryCount, 'tries so far. Trying again!');
       callNextTick(go);
-    }
-    else {
+    } else {
       console.log('Hit max tries. Giving up.');
     }
   }

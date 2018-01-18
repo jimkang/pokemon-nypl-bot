@@ -2,20 +2,9 @@ var probable = require('probable');
 var truncateToTweet = require('tweet-truncate');
 var toTitleCase = require('titlecase');
 
-var connectors = [
-  ' ; ',
-  ' | ',
-  ' + ',
-  ' on ',
-  ' – ',
-  ' @ '
-];
+var connectors = [' ; ', ' | ', ' + ', ' on ', ' – ', ' @ '];
 
-var punctuation = [
-  '!',
-  '.',
-  ''
-];
+var punctuation = ['!', '.', ''];
 
 function makePokemonCaption(pokemonNames, exhibit, url) {
   var caption = '';
@@ -28,9 +17,7 @@ function makePokemonCaption(pokemonNames, exhibit, url) {
   if (url) {
     caption = truncateToTweet({
       text: caption,
-      urlsToAdd: [
-        url
-      ]
+      urlsToAdd: [url]
     });
   }
   return caption;

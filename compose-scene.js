@@ -21,15 +21,13 @@ function ComposeScene(createOpts, createDone) {
   }
 
   var pasteBitmaps;
-  var pasteConfig = {
-  };
+  var pasteConfig = {};
   PasteBitmaps(pasteConfig, passComposeFn);
 
   function passComposeFn(error, thePasteBitmapsFn) {
     if (error) {
       createDone(error);
-    }
-    else {
+    } else {
       pasteBitmaps = thePasteBitmapsFn;
       createDone(null, ComposeScene);
     }
@@ -59,13 +57,13 @@ function ComposeScene(createOpts, createDone) {
     function getBG(done) {
       var reqOpts = {
         url: bgURI,
-        encoding: null,
+        encoding: null
       };
       request(reqOpts, done);
     }
 
     function loadBGBuffer(response, buffer, done) {
-      Jimp.read(buffer, done);      
+      Jimp.read(buffer, done);
     }
 
     function resizeBG(bg, done) {
@@ -95,11 +93,14 @@ function ComposeScene(createOpts, createDone) {
       callNextTick(done, null, bg, figures);
 
       function scaleIfNecessary(figure) {
-        if (figure.bitmap.width > bg.bitmap.width/2 ||
-          figure.bitmap.height > bg.bitmap.height/2) {
-
+        if (
+          figure.bitmap.width > bg.bitmap.width / 2 ||
+          figure.bitmap.height > bg.bitmap.height / 2
+        ) {
           figure.scaleToFit(
-            bg.bitmap.width/2, bg.bitmap.height/2, Jimp.RESIZE_BICUBIC
+            bg.bitmap.width / 2,
+            bg.bitmap.height / 2,
+            Jimp.RESIZE_BICUBIC
           );
         }
       }
@@ -126,7 +127,10 @@ function ComposeScene(createOpts, createDone) {
         background: {
           width: bg.bitmap.width,
           height: bg.bitmap.height,
-          fill: roll(3) === 0 ? 0xFFFFFFFF : Jimp.rgbaToInt(roll(256), roll(256), roll(256), 0xFF)
+          fill:
+            roll(3) === 0
+              ? 0xffffffff
+              : Jimp.rgbaToInt(roll(256), roll(256), roll(256), 0xff)
         },
         images: imageSpecs
       };
@@ -136,10 +140,11 @@ function ComposeScene(createOpts, createDone) {
       function placeInstance(thing) {
         return {
           jimpImage: thing,
-          x: marginX + roll(bg.bitmap.width - 2 * marginX - thing.bitmap.width) ,
-          y: marginY + roll(bg.bitmap.height - 2 * marginY - thing.bitmap.height)
+          x: marginX + roll(bg.bitmap.width - 2 * marginX - thing.bitmap.width),
+          y:
+            marginY + roll(bg.bitmap.height - 2 * marginY - thing.bitmap.height)
         };
-      } 
+      }
     }
   }
 }

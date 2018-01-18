@@ -5,7 +5,7 @@ var queue = require('d3-queue').queue;
 
 const baseURL = 'https://images-api.nasa.gov/search';
 
-function GetRandomNASAImage({pickSearchString}) {
+function GetRandomNASAImage({ pickSearchString }) {
   return getRandomNASAImage;
 
   // TODO: Maybe respect these opts someday?
@@ -67,8 +67,7 @@ function checkMIMEType(url, done) {
     console.log('content-type:', res.headers['content-type']);
     if (res.headers['content-type']) {
       done(null, url);
-    }
-    else {
+    } else {
       console.log('No content-type found on ' + url);
       done();
     }

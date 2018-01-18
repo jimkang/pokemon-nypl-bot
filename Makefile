@@ -51,3 +51,6 @@ try-nasa-images:
 		--data-urlencode "q=galaxy" \
 		--data-urlencode "media_type=image" \
 		| json
+
+prettier:
+	prettier --single-quote --write "**/*.js"

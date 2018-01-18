@@ -1,4 +1,5 @@
-var getRandomNYPLCapture = require('public-domain-nypl-captures').getRandomCapture;
+var getRandomNYPLCapture = require('public-domain-nypl-captures')
+  .getRandomCapture;
 
 module.exports = {
   getBackgroundImage: getRandomNYPLCapture,

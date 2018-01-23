@@ -35,7 +35,7 @@ if (process.argv.length > 2) {
 var staticWebStream = StaticWebArchiveOnGit({
   config: config.github,
   title: config.archiveName,
-  footerScript: `<script type="text/javascript">
+  footerHTML: `<script type="text/javascript">
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
@@ -70,6 +70,7 @@ function go() {
     };
 
     var caption;
+    var hyperlinkedCaption;
     var filePath;
     var q = queue();
     q.defer(getForegroundImage);
@@ -77,11 +78,17 @@ function go() {
     q.await(sb(assembleImage, wrapUp));
 
     function assembleImage(pokemonImages, bgImage) {
-      caption = makePokemonCaption(
-        pluck(pokemonImages, 'name'),
-        bgImage[behavior.properties.title],
-        bgImage[behavior.properties.url]
-      );
+      caption = makePokemonCaption({
+        pokemonNames: pluck(pokemonImages, 'name'),
+        exhibit: bgImage[behavior.properties.title],
+        url: bgImage[behavior.properties.url]
+      });
+      hyperlinkedCaption = makePokemonCaption({
+        pokemonNames: pluck(pokemonImages, 'name'),
+        exhibit: bgImage[behavior.properties.title],
+        url: bgImage[behavior.properties.url],
+        hyperlinkExhibit: true
+      });
 
       filePath =
         'image-output/would-have-posted-' +
@@ -120,7 +127,8 @@ function go() {
         id,
         date: new Date().toISOString(),
         mediaFilename: id + '.png',
-        caption,
+        caption: hyperlinkedCaption,
+        altText: caption,
         buffer
       });
       staticWebStream.end(done);
